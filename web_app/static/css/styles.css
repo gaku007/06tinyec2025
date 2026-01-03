@@ -1,0 +1,32 @@
+:root{
+  --bg:#f7f7f7;
+  --surface:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --accent:#1a73e8;
+  --accent-2:#ff6b6b;
+}
+*{box-sizing:border-box}
+body{font-family:Inter, system-ui, -apple-system, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;margin:0;background:var(--bg);color:var(--text);}
+.container{padding:16px;max-width:980px;margin:0 auto}
+.header .bar{display:flex;align-items:center;gap:12px;padding:10px 0}
+.logo a{font-weight:700;text-decoration:none;color:var(--text)}
+.menu{display:flex;gap:10px;align-items:center}
+.menu a{text-decoration:none;color:var(--text);padding:6px 8px}
+.badge{background:var(--accent-2);color:#fff;border-radius:999px;padding:2px 8px;font-size:13px;display:none}
+.hero{background:var(--surface);padding:20px;border-radius:8px;margin-bottom:12px}
+.cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;display:inline-block}
+.grid{display:grid;grid-template-columns:repeat(1,1fr);gap:12px}
+.card{background:var(--surface);padding:10px;border-radius:8px}
+.thumb{background:#eee;height:140px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:#999}
+.price{color:var(--muted);margin-top:6px}
+.product{display:flex;flex-direction:column;gap:12px}
+.product .gallery{width:100%}
+.code-box{background:var(--surface);padding:12px;border-radius:8px}
+table.orders{width:100%;border-collapse:collapse}
+table.orders th,table.orders td{padding:8px;border-bottom:1px solid #eee}
+
+@media(min-width:768px){
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .menu{gap:18px}
+}

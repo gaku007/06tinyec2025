@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Cart - ApparelShop{% endblock %}
+{% block content %}
+  <h1>カート</h1>
+  <div id="cart-container">
+    <p>カートの中身を読み込んでいます…</p>
+  </div>
+  <div style="margin-top:12px">
+    <button id="btn-checkout" class="cta">購入手続きへ</button>
+  </div>
+
+  <script>
+    function loadCart(){ try{ return JSON.parse(localStorage.getItem('cart')||'[]'); }catch(e){return []} }
+    function renderCart(){
+      const container = document.getElementById('cart-container');
+      const cart = loadCart();
+      if(!cart.length){ container.innerHTML = '<p>カートは空です。</p>'; document.getElementById('btn-checkout').disabled = true; return; }
+      let html = '<ul style="list-style:none;padding:0">';
+      let total = 0;
+      cart.forEach(item=>{
+        const sub = (item.qty||1) * (item.price||0);
+        total += sub;
+        html += `<li style="margin-bottom:10px;padding:8px;background:#fff;border-radius:6px"><div><strong>${item.name}</strong></div><div>数量: ${item.qty} 価格: ¥${item.price.toLocaleString()} 小計: ¥${sub.toLocaleString()}</div></li>`;
+      });
+      html += `</ul><div style="margin-top:8px">合計: <strong>¥${total.toLocaleString()}</strong></div>`;
+      container.innerHTML = html;
+      document.getElementById('btn-checkout').disabled = false;
+    }
+    document.getElementById('btn-checkout').addEventListener('click', function(){ location.href = '/checkout'; });
+    document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
+
+{% endblock %}

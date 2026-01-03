@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} - ApparelShop{% endblock %}
+{% block content %}
+  <div class="product">
+    <div class="gallery">
+      <div class="thumb big">{{ product.id }}</div>
+    </div>
+    <div class="meta">
+      <h2>{{ product.name }}</h2>
+      <div class="price">¥{{ '{:,}'.format(product.price) }}</div>
+      <p>在庫: {{ product.stock }}</p>
+      <form id="add-form">
+        <label>数量 <input type="number" id="qty" name="qty" value="1" min="1" style="width:60px"></label>
+        <button type="button" id="btn-add" class="cta">カートに追加</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('btn-add').addEventListener('click', function(){
+      const q = parseInt(document.getElementById('qty').value||1,10);
+      const cart = JSON.parse(localStorage.getItem('cart')||'[]');
+      const id = '{{ product.id }}';
+      const price = {{ product.price }};
+      const name = '{{ product.name }}';
+      const it = cart.find(i=>i.id===id);
+      if(it) it.qty += q; else cart.push({id:id,qty:q,price:price,name:name});
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('カートに追加しました');
+      try{ parent.updateCartBadge && parent.updateCartBadge(); }catch(e){}
+      location.href = '/cart';
+    });
+  </script>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Payment - ApparelShop{% endblock %}
+{% block content %}
+  <h1>支払いコード</h1>
+  {% if order %}
+    <div class="code-box">
+      <h2>コード: <span class="code">{{ code }}</span></h2>
+      <p>有効期限: {{ order.expires_at }}</p>
+      <div class="qr">[QR]</div>
+      <p>店頭でこのコードを提示してお支払いください。</p>
+      <div style="margin-top:12px"><button id="btn-sim" class="cta">支払いをシミュレート（管理用）</button></div>
+    </div>
+  {% else %}
+    <p>注文が見つかりません。</p>
+  {% endif %}
+
+  <script>
+    document.getElementById('btn-sim')?.addEventListener('click', async function(){
+      const code = '{{ code }}';
+      const resp = await fetch('/api/payments/simulate', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({code})});
+      const j = await resp.json(); if(j.ok){ alert('支払い完了'); location.href = '/admin/orders'; } else { alert(JSON.stringify(j)); }
+    });
+  </script>
+
+{% endblock %}

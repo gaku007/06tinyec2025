@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Checkout - ApparelShop{% endblock %}
+{% block content %}
+  <h1>チェックアウト</h1>
+  <form id="checkout-form">
+    <div>
+      <label>お名前<input type="text" id="name" required></label>
+    </div>
+    <div>
+      <label>メール<input type="email" id="email" required></label>
+    </div>
+    <div>
+      <label>受取チェーン
+        <select id="chain">
+          <option value="">選択してください</option>
+          <option value="LAWSON">LAWSON</option>
+          <option value="FamilyMart">FamilyMart</option>
+          <option value="Seven">Seven</option>
+        </select>
+      </label>
+    </div>
+    <div>
+      <label>店舗コード<input id="store_code"></label>
+    </div>
+    <div style="margin-top:12px"><button type="button" id="btn-order" class="cta">注文を確定する</button></div>
+  </form>
+
+  <script>
+    function loadCart(){ try{ return JSON.parse(localStorage.getItem('cart')||'[]'); }catch(e){return []} }
+    document.getElementById('btn-order').addEventListener('click', async function(){
+      const cart = loadCart(); if(!cart.length){ alert('カートが空です'); return; }
+      const name = document.getElementById('name').value; const email = document.getElementById('email').value;
+      const chain = document.getElementById('chain').value; const store_code = document.getElementById('store_code').value;
+      const resp = await fetch('/api/checkout', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({cart,name,email,chain,store_code})});
+      const data = await resp.json();
+      if(resp.ok){ localStorage.removeItem('cart'); location.href = '/payment/' + data.payment_code; } else { alert(JSON.stringify(data)); }
+    });
+  </script>
+
+{% endblock %}
